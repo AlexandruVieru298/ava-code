@@ -1,0 +1,114 @@
+/* ====== Sidebar pe DESKTOP ====== */
+aside.sidebar {
+  position: fixed;                /* stă fix pe stânga, nu se mișcă la scroll */
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 240px;                   /* lățime fixă pentru 1920x1080 */
+  background: linear-gradient(180deg, var(--bg-2), #0a0f1c 70%);
+  border-right: 1px solid var(--ring);
+  padding: 20px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.brand {
+  font-weight: 700;
+  letter-spacing: .3px;
+}
+
+/* lista de linkuri */
+.navlist {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* linkurile normale */
+.navlink {
+  display: block;
+  padding: 10px 12px;
+  color: var(--muted);
+  text-decoration: none;
+  border-radius: 12px;
+  transition: .18s;
+}
+.navlink:hover {
+  background: #121831;
+  color: #fff;
+}
+.navlink.active {
+  background: #151d3c;
+  color: #fff;
+  border: 1px solid #212a4e;
+}
+
+/* împinge footer-ul jos */
+.spacer {
+  flex: 1;
+}
+
+/* butonul GitHub */
+.github {
+  display: block;
+  text-align: center;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: #121831;
+  color: #fff;
+  text-decoration: none;
+  border: 1px solid #212a4e;
+}
+
+/* footer mic jos */
+.foot {
+  font-size: 12px;
+  color: var(--muted);
+  text-align: center;
+}
+
+/* ====== Topbar (MOBIL) ====== */
+.topbar {
+  display: none;                  /* ascuns pe desktop */
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  background: var(--bg-2);
+  border-bottom: 1px solid var(--ring);
+}
+
+/* butonul de meniu (mobil) */
+.menu-btn {
+  background: #121831;
+  color: #fff;
+  border: 1px solid #212a4e;
+  padding: 8px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+/* meniul mobil ascuns implicit */
+.mobile-panel {
+  display: none;
+  background: var(--bg-2);
+  border-bottom: 1px solid var(--ring);
+}
+
+/* când e deschis (clasa open), îl afișăm */
+.mobile-panel.open {
+  display: block;
+}
+
+/* ====== Media query pentru mobil ====== */
+@media (max-width: 1024px) {
+  aside.sidebar {
+    display: none;   /* ascundem sidebar-ul pe mobil */
+  }
+  .topbar {
+    display: flex;   /* arătăm bara de sus */
+  }
+}

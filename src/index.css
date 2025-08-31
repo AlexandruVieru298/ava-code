@@ -1,0 +1,48 @@
+/* ============== Design tokens (root) ============== */
+:root{
+  --bg:#0e1324;      /* fundal principal */
+  --bg-2:#0b0f1c;    /* strat secundar (topbar/panel/card) */
+  --text:#e6e9ff;    /* text principal */
+  --muted:#8a93b2;   /* text secundar */
+  --ring:#2b3356;    /* linii/border fin */
+
+  /* dimensiuni de layout (baseline 1920x1080) */
+  --sidebar-w: 240px;  /* lățimea sidebar-ului fix */
+}
+
+/* ============== Reset minim util ============== */
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html, body, #root { height: 100%; }
+
+body{
+  margin: 0;
+  font: 500 16px/1.5 ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+  color: var(--text);
+  background: var(--bg);
+}
+
+/* linkuri fără subliniere by default; culoarea vine din body */
+a { color: inherit; text-decoration: none; }
+a:hover { text-decoration: none; }
+
+/* imagini responsive by default */
+img, svg { display:block; max-width:100%; }
+
+/* ============== Helpers de layout pentru test ============== */
+/* wrapper opțional; nu e obligatoriu la sidebar FIX */
+.layout { min-height: 100vh; }
+
+/* containerul de pagină trebuie să pornească DUPĂ sidebar (240px) */
+.page {
+  margin-left: var(--sidebar-w); /* foarte important când aside e FIX */
+  min-height: 100vh;
+  padding: 60px;                 /* doar ca să vezi conținutul respirând */
+}
+
+/* mobil: nu mai offsetăm, pentru că sidebar-ul se ascunde */
+@media (max-width: 1024px){
+  .page { margin-left: 0; padding: 20px; }
+}
