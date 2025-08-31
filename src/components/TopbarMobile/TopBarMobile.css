@@ -1,0 +1,184 @@
+/* EN: Mobile topbar with dropdown menu
+   RO: Topbar mobil cu meniu dropdown */
+
+.mb-topbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 56px;
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 14px;
+  background: color-mix(in oklab, var(--bg-2), transparent 10%);
+  backdrop-filter: blur(10px) saturate(120%);
+  -webkit-backdrop-filter: blur(10px) saturate(120%);
+  border-bottom: 1px solid color-mix(in oklab, var(--ring), transparent 45%);
+  z-index: 60;
+}
+@media (max-width: 1024px) {
+  .mb-topbar {
+    display: flex;
+  }
+}
+
+.mb-brand {
+  font-weight: 900;
+  letter-spacing: 0.5px;
+  color: var(--text);
+  text-decoration: none;
+}
+
+/* Burger */
+.mb-burger {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  border: 1px solid color-mix(in oklab, var(--ring), transparent 50%);
+  background: color-mix(in oklab, var(--bg), transparent 20%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  transition: background 200ms ease, border-color 200ms ease,
+    transform 200ms ease;
+}
+.mb-burger:hover {
+  background: color-mix(in oklab, var(--bg), transparent 10%);
+  border-color: color-mix(in oklab, var(--ring), transparent 30%);
+}
+.mb-burger:active {
+  transform: scale(0.96);
+}
+.mb-burger:focus-visible {
+  outline: 2px solid color-mix(in oklab, var(--accent-2), transparent 30%);
+  outline-offset: 2px;
+}
+.mb-burger span {
+  display: block;
+  width: 18px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--text);
+}
+.mb-burger.is-active span:nth-child(2) {
+  background: linear-gradient(90deg, var(--accent-1), var(--accent-2));
+}
+
+/* Overlay */
+.mb-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 200ms ease;
+  z-index: 55;
+}
+.mb-overlay.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Dropdown */
+.mb-menu {
+  position: fixed;
+  top: 56px;
+  left: 0;
+  right: 0;
+  transform: translateY(-8px);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 200ms ease, opacity 200ms ease;
+  z-index: 60;
+}
+.mb-menu.is-open {
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.mb-navlist {
+  margin: 10px 10px 0;
+  padding: 8px;
+  list-style: none;
+  background: color-mix(in oklab, var(--bg-2), transparent 10%);
+  backdrop-filter: blur(10px) saturate(120%);
+  -webkit-backdrop-filter: blur(10px) saturate(120%);
+  border: 1px solid color-mix(in oklab, var(--ring), transparent 45%);
+  border-radius: 14px;
+  box-shadow: 0 0 0 1px color-mix(in oklab, var(--ring), transparent 65%),
+    0 16px 40px -20px rgba(0, 0, 0, 0.6);
+  display: grid;
+  gap: 6px;
+}
+
+.mb-link {
+  position: relative;
+  display: block;
+  padding: 12px 14px 12px 16px;
+  border-radius: 12px;
+  color: var(--text);
+  transition: background 200ms ease;
+}
+.mb-link:hover {
+  background: color-mix(in oklab, var(--bg), transparent 12%);
+}
+.mb-link:focus-visible {
+  outline: 2px solid color-mix(in oklab, var(--accent-2), transparent 30%);
+  outline-offset: 2px;
+}
+.mb-link .mb-bar {
+  position: absolute;
+  left: 8px;
+  top: 8px;
+  bottom: 8px;
+  width: 3px;
+  border-radius: 3px;
+  background: var(--gradient-accent);
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 200ms ease;
+}
+.mb-link:hover .mb-bar,
+.mb-link.is-active .mb-bar {
+  transform: scaleY(1);
+}
+
+.mb-socials {
+  margin: 8px 10px 10px;
+  padding: 8px;
+  background: color-mix(in oklab, var(--bg-2), transparent 10%);
+  border: 1px solid color-mix(in oklab, var(--ring), transparent 45%);
+  border-radius: 14px;
+  display: grid;
+  gap: 8px;
+}
+.mb-chip {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: color-mix(in oklab, var(--bg), transparent 15%);
+  color: var(--text);
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 200ms ease;
+}
+.mb-chip:hover {
+  background: color-mix(in oklab, var(--bg), transparent 10%);
+}
+
+/* Visibility vs sidebar */
+@media (max-width: 1024px) {
+  .aside {
+    display: none !important;
+  }
+}
+@media (min-width: 1025px) {
+  .mb-topbar {
+    display: none !important;
+  }
+}

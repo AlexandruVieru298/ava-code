@@ -1,88 +1,126 @@
-import React, { useState } from 'react';
-import './Sidebar.css'
+import { useMemo } from "react";
+import "./Sidebar.css";
+import logo from "../../assets/logo.svg";
 
-function Sidebar() {
-    const [open, setOpen] = useState(false);
+/* EN: Main nav config
+   RO: Configurația linkurilor de navigație */
+const NAV = [
+  { label: "Portofoliu", href: "/portofoliu" },
+  { label: "Skills", href: "/skills" },
+  { label: "Despre mine", href: "/despre" },
+  { label: "Contact", href: "/contact" },
+  { label: "Blog", href: "/blog" },
+];
 
-    const LINKS = [
-        {href: "#portfolio", label: "Portofoliu"},
-        {href: "#skills", label: "Skills"},
-        {href: "#about", label: "Despre mine"},
-        {href: "#contact", label: "Contact"},
-        {href: "#blog", label: "Blog"},
-    ]
-    return (
-         <>
-      {/* TOPBAR (apare doar pe mobil) */}
-      <header className="topbar" aria-label="Bară de navigare (mobil)">
-        <div className="brand">AVA-CODE</div>
+export default function Sidebar({ currentPath }) {
+  const pathname = useMemo(
+    () =>
+      currentPath ||
+      (typeof window !== "undefined" ? window.location.pathname : "/"),
+    [currentPath]
+  );
 
-        {/* buton pentru deschiderea/închiderea meniului */}
-        <button
-          type="button"
-          className="menu-btn"
-          aria-controls="mPanel"
-          aria-expanded={open}
-          onClick={() => setOpen(o => !o)} // toggle la open
+  // EN: Update radial gradient position on logo hover
+  // RO: Actualizează poziția gradientului radial pe hover pe logo
+  const onLogoMove = (e) => {
+    const el = e.currentTarget;
+    const r = el.getBoundingClientRect();
+    const x = ((e.clientX - r.left) / r.width) * 100;
+    const y = ((e.clientY - r.top) / r.height) * 100;
+    el.style.setProperty("--x", `${x}%`);
+    el.style.setProperty("--y", `${y}%`);
+  };
+  const onLogoEnter = (e) => {
+    e.currentTarget.style.setProperty("--x", "50%");
+    e.currentTarget.style.setProperty("--y", "50%");
+  };
+
+  return (
+    <aside className="aside centered" aria-label="Primary sidebar">
+      {/* Brand */}
+      <div className="brand brand--stack">
+        <div
+          className="logo-wrap"
+          onMouseMove={onLogoMove}
+          onMouseEnter={onLogoEnter}
         >
-          Meniu
-        </button>
-      </header>
+          <img src={logo} alt="AVA-CODE logo" className="logo-img logo-white" />
+          <span
+            className="logo-ink"
+            aria-hidden="true"
+            style={{
+              WebkitMaskImage: `url(${logo})`,
+              maskImage: `url(${logo})`,
+            }}
+          />
+        </div>
 
-      {/* MENIU MOBIL (ascuns/afișat la click pe buton) */}
-      <nav
-        id="mPanel"
-        className={"mobile-panel" + (open ? " open" : "")}
-        aria-label="Meniu principal (mobil)"
-      >
-        <ul className="navlist">
-          {LINKS.map(link => (
-            <li key={link.href}>
-              <a
-                className="navlink"
-                href={link.href}
-                onClick={() => setOpen(false)} // când apeși pe link, închizi meniul
-              >
-                {link.label}
-              </a>
-            </li>
-          ))}
-          <li>
-            <a
-              className="github"
-              href="#"
-              onClick={() => setOpen(false)}
-            >
-              GitHub
-            </a>
-          </li>
+        <div className="brand-title">AVA-CODE</div>
+        <div className="brand-role">
+          <span className="muted">sKy</span>
+          <span className="role-sep">/</span>
+          <span className="role-accent">Front-End&nbsp;Developer</span>
+        </div>
+      </div>
+
+      {/* Navigation */}
+      <nav className="nav" aria-label="Main navigation">
+        <ul role="list">
+          {NAV.map(({ label, href }) => {
+            const active =
+              href === "/" ? pathname === "/" : pathname.startsWith(href);
+            return (
+              <li key={href}>
+                <a
+                  href={href}
+                  className={`link ${active ? "active" : ""}`}
+                  aria-current={active ? "page" : undefined}
+                >
+                  <span className="bar" aria-hidden="true" />
+                  <span className="lbl">{label}</span>
+                </a>
+              </li>
+            );
+          })}
         </ul>
       </nav>
 
-      {/* SIDEBAR (apare doar pe desktop) */}
-      <aside className="sidebar" aria-label="Meniu principal (desktop)">
-        <div className="brand">AVA-CODE</div>
+      {/* Socials */}
+      <div className="socials" aria-label="Social links">
+        <a
+          className="chip"
+          href="https://github.com/"
+          target="_blank"
+          rel="noreferrer"
+        >
+          GitHub
+        </a>
+        <a
+          className="chip"
+          href="https://instagram.com/"
+          target="_blank"
+          rel="noreferrer"
+        >
+          Instagram
+        </a>
+        <a
+          className="chip"
+          href="https://linkedin.com/"
+          target="_blank"
+          rel="noreferrer"
+        >
+          LinkedIn
+        </a>
+      </div>
 
-        <nav>
-          <ul className="navlist">
-            {LINKS.map(link => (
-              <li key={link.href}>
-                <a className="navlink" href={link.href}>
-                  {link.label}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </nav>
-
-        {/* Spacer împinge GitHub + footer jos */}
-        <div className="spacer" />
-
-        <a className="github" href="#">GitHub</a>
-        <div className="foot">©2025 sKy</div>
-      </aside>
-    </>
-    );
+      {/* Footer */}
+      <footer className="aside-footer">
+        <div>© {new Date().getFullYear()}</div>
+        <div>Vieru Adrian Alexandru (sKy)</div>
+        <a href="mailto:alexandru.vieru298@gmail.com" className="muted">
+          alexandru.vieru298@gmail.com
+        </a>
+      </footer>
+    </aside>
+  );
 }
-
-export default Sidebar;
