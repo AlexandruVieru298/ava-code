@@ -1,114 +1,216 @@
-/* ====== Sidebar pe DESKTOP ====== */
-aside.sidebar {
-  position: fixed;                /* stă fix pe stânga, nu se mișcă la scroll */
-  top: 0;
-  bottom: 0;
-  left: 0;
-  width: 240px;                   /* lățime fixă pentru 1920x1080 */
-  background: linear-gradient(180deg, var(--bg-2), #0a0f1c 70%);
-  border-right: 1px solid var(--ring);
-  padding: 20px 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
+/* EN: Fixed left sidebar (glass, subtle shadow)
+   RO: Sidebar stânga fix (glass, shadow discret) */
+
+.aside {
+  position: fixed;
+  inset: 0 auto 0 0;
+  width: var(--sidebar-w);
+  display: grid;
+  grid-template-rows: auto 1fr auto auto;
+  gap: 24px;
+  padding: 24px 18px;
+  color: var(--text);
+  background: color-mix(in oklab, var(--bg-2), transparent 18%);
+  backdrop-filter: blur(10px) saturate(120%);
+  border-right: 1px solid color-mix(in oklab, var(--ring), transparent 45%);
+  box-shadow: 0 0 0 1px color-mix(in oklab, var(--ring), transparent 65%),
+    8px 0 24px -12px rgba(0, 0, 0, 0.45);
+  z-index: 50;
+}
+.aside.centered .nav {
+  align-self: center;
 }
 
+/* Brand */
 .brand {
-  font-weight: 700;
-  letter-spacing: .3px;
-}
-
-/* lista de linkuri */
-.navlist {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
+  display: grid;
   gap: 6px;
+  padding: 6px;
 }
-
-/* linkurile normale */
-.navlink {
-  display: block;
-  padding: 10px 12px;
-  color: var(--muted);
-  text-decoration: none;
-  border-radius: 12px;
-  transition: .18s;
-}
-.navlink:hover {
-  background: #121831;
-  color: #fff;
-}
-.navlink.active {
-  background: #151d3c;
-  color: #fff;
-  border: 1px solid #212a4e;
-}
-
-/* împinge footer-ul jos */
-.spacer {
-  flex: 1;
-}
-
-/* butonul GitHub */
-.github {
-  display: block;
-  text-align: center;
-  padding: 10px 12px;
-  border-radius: 12px;
-  background: #121831;
-  color: #fff;
-  text-decoration: none;
-  border: 1px solid #212a4e;
-}
-
-/* footer mic jos */
-.foot {
-  font-size: 12px;
-  color: var(--muted);
+.brand--stack {
+  justify-items: center;
   text-align: center;
 }
 
-/* ====== Topbar (MOBIL) ====== */
-.topbar {
-  display: none;                  /* ascuns pe desktop */
+.logo-wrap {
+  position: relative;
+  display: inline-block;
+}
+.logo-img {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+}
+.logo-white {
+  filter: brightness(0) invert(1);
+}
+
+/* EN: Cursor-follow radial color masked by logo
+   RO: Gradient radial urmărește cursorul, mascat pe forma logo-ului */
+.logo-ink {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  background: radial-gradient(
+    circle at var(--x, 50%) var(--y, 50%),
+    var(--accent-1) 0%,
+    var(--accent-2) 40%,
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity 180ms ease;
+}
+@media (hover: hover) {
+  .logo-wrap:hover .logo-ink {
+    opacity: 1;
+  }
+}
+
+.brand-title {
+  font-size: 18px;
+  font-weight: 900;
+  letter-spacing: 0.5px;
+}
+.brand-role {
+  display: inline-flex;
+  gap: 8px;
   align-items: center;
-  justify-content: space-between;
-  padding: 10px 16px;
-  background: var(--bg-2);
-  border-bottom: 1px solid var(--ring);
+  justify-content: center;
+  font-size: 12px;
+  color: color-mix(in oklab, var(--text), var(--muted) 35%);
+}
+.brand-role .role-sep {
+  opacity: 0.5;
+}
+.brand-role .role-accent {
+  background: var(--gradient-accent);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-weight: 700;
 }
 
-/* butonul de meniu (mobil) */
-.menu-btn {
-  background: #121831;
-  color: #fff;
-  border: 1px solid #212a4e;
+/* Nav */
+.nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0 4px;
+  display: grid;
+  gap: 10px;
+}
+.link {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  border-radius: 12px;
+  color: var(--text);
+  transition: background 200ms ease;
+  overflow: hidden;
+}
+.link .lbl {
+  letter-spacing: 0.2px;
+}
+.link .bar {
+  position: absolute;
+  left: 0;
+  top: 6px;
+  bottom: 6px;
+  width: 3px;
+  border-radius: 3px;
+  background: var(--gradient-accent);
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 200ms ease;
+}
+.link.active .bar,
+.link:hover .bar {
+  transform: scaleY(1);
+}
+.link:hover {
+  background: color-mix(in oklab, var(--bg), transparent 12%);
+}
+
+/* Gleam */
+.link::after {
+  content: "";
+  position: absolute;
+  top: -150%;
+  left: -60%;
+  width: 60%;
+  height: 300%;
+  transform: rotate(20deg);
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.08) 45%,
+    rgba(255, 255, 255, 0) 90%
+  );
+  opacity: 0;
+  transition: opacity 200ms ease, transform 200ms ease;
+}
+.link:hover::after {
+  opacity: 1;
+  transform: translateX(50%) rotate(20deg);
+}
+
+/* Focus */
+.link:focus-visible,
+.chip:focus-visible {
+  outline: 2px solid color-mix(in oklab, var(--accent-2), transparent 30%);
+  outline-offset: 2px;
+  border-radius: 12px;
+}
+
+/* Socials */
+.socials {
+  display: grid;
+  gap: 8px;
+  padding: 0 4px;
+}
+.chip {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   padding: 8px 12px;
   border-radius: 10px;
-  cursor: pointer;
+  background: color-mix(in oklab, var(--bg-2), transparent 15%);
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 600;
+  transition: background 200ms ease;
+}
+.chip:hover {
+  background: color-mix(in oklab, var(--bg), transparent 10%);
 }
 
-/* meniul mobil ascuns implicit */
-.mobile-panel {
-  display: none;
-  background: var(--bg-2);
-  border-bottom: 1px solid var(--ring);
+/* Footer */
+.aside-footer {
+  text-align: center;
+  font-size: 12px;
+  color: color-mix(in oklab, var(--text), var(--muted) 35%);
+  display: grid;
+  gap: 4px;
+}
+.aside-footer .muted {
+  font-size: 11px;
+  color: color-mix(in oklab, var(--text), var(--muted) 45%);
 }
 
-/* când e deschis (clasa open), îl afișăm */
-.mobile-panel.open {
-  display: block;
-}
-
-/* ====== Media query pentru mobil ====== */
+/* Mobile behavior (sidebar hidden, handled by Topbar) */
 @media (max-width: 1024px) {
-  aside.sidebar {
-    display: none;   /* ascundem sidebar-ul pe mobil */
+  .aside {
+    transform: translateX(-100%);
+    transition: transform 200ms ease;
   }
-  .topbar {
-    display: flex;   /* arătăm bara de sus */
+  .aside.is-mobile-open {
+    transform: translateX(0);
   }
 }
