@@ -1,13 +1,10 @@
 import { useMemo } from "react";
 import "./Sidebar.css";
-import logo from "../../assets/logo.svg";
+import logo from "../../assets/logo.svg"; // logo-ul tău alb (static)
 
-/* EN: Main nav config
-   RO: Configurația linkurilor de navigație */
 const NAV = [
-  { label: "Portofoliu", href: "/portofoliu" },
-  { label: "Skills", href: "/skills" },
-  { label: "Despre mine", href: "/despre" },
+  { label: "Home", href: "" },
+  { label: "About Me", href: "#about" },
   { label: "Contact", href: "/contact" },
   { label: "Blog", href: "/blog" },
 ];
@@ -20,41 +17,11 @@ export default function Sidebar({ currentPath }) {
     [currentPath]
   );
 
-  // EN: Update radial gradient position on logo hover
-  // RO: Actualizează poziția gradientului radial pe hover pe logo
-  const onLogoMove = (e) => {
-    const el = e.currentTarget;
-    const r = el.getBoundingClientRect();
-    const x = ((e.clientX - r.left) / r.width) * 100;
-    const y = ((e.clientY - r.top) / r.height) * 100;
-    el.style.setProperty("--x", `${x}%`);
-    el.style.setProperty("--y", `${y}%`);
-  };
-  const onLogoEnter = (e) => {
-    e.currentTarget.style.setProperty("--x", "50%");
-    e.currentTarget.style.setProperty("--y", "50%");
-  };
-
   return (
     <aside className="aside centered" aria-label="Primary sidebar">
-      {/* Brand */}
+      {/* BRAND (stacked, centered) */}
       <div className="brand brand--stack">
-        <div
-          className="logo-wrap"
-          onMouseMove={onLogoMove}
-          onMouseEnter={onLogoEnter}
-        >
-          <img src={logo} alt="AVA-CODE logo" className="logo-img logo-white" />
-          <span
-            className="logo-ink"
-            aria-hidden="true"
-            style={{
-              WebkitMaskImage: `url(${logo})`,
-              maskImage: `url(${logo})`,
-            }}
-          />
-        </div>
-
+        <img src={logo} alt="AVA-CODE logo" className="logo-img logo-white" />
         <div className="brand-title">AVA-CODE</div>
         <div className="brand-role">
           <span className="muted">sKy</span>
@@ -63,7 +30,10 @@ export default function Sidebar({ currentPath }) {
         </div>
       </div>
 
-      {/* Navigation */}
+      {/* SEPARATOR – între brand și navigație */}
+      <div className="brand-sep" role="separator" aria-hidden="true" />
+
+      {/* NAV */}
       <nav className="nav" aria-label="Main navigation">
         <ul role="list">
           {NAV.map(({ label, href }) => {
@@ -85,35 +55,20 @@ export default function Sidebar({ currentPath }) {
         </ul>
       </nav>
 
-      {/* Socials */}
+      {/* SOCIALS */}
       <div className="socials" aria-label="Social links">
-        <a
-          className="chip"
-          href="https://github.com/"
-          target="_blank"
-          rel="noreferrer"
-        >
+        <a className="chip" href="https://github.com/" target="_blank" rel="noreferrer">
           GitHub
         </a>
-        <a
-          className="chip"
-          href="https://instagram.com/"
-          target="_blank"
-          rel="noreferrer"
-        >
+        <a className="chip" href="https://instagram.com/" target="_blank" rel="noreferrer">
           Instagram
         </a>
-        <a
-          className="chip"
-          href="https://linkedin.com/"
-          target="_blank"
-          rel="noreferrer"
-        >
+        <a className="chip" href="https://linkedin.com/" target="_blank" rel="noreferrer">
           LinkedIn
         </a>
       </div>
 
-      {/* Footer */}
+      {/* FOOTER */}
       <footer className="aside-footer">
         <div>© {new Date().getFullYear()}</div>
         <div>Vieru Adrian Alexandru (sKy)</div>

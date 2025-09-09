@@ -1,84 +1,50 @@
-/* EN: Fixed left sidebar (glass, subtle shadow)
-   RO: Sidebar stânga fix (glass, shadow discret) */
+:root{
+  --accent-1:#ff4fa0;
+  --accent-2:#9b5cff;
+  --gradient-accent: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+  --sidebar-w-collapsed: 72px;
+}
 
+/* container */
 .aside {
   position: fixed;
   inset: 0 auto 0 0;
   width: var(--sidebar-w);
   display: grid;
-  grid-template-rows: auto 1fr auto auto;
-  gap: 24px;
+  /* avem: brand, separator, nav, socials, footer */
+  grid-template-rows: auto auto 1fr auto auto;
+  gap: 18px;
   padding: 24px 18px;
   color: var(--text);
   background: color-mix(in oklab, var(--bg-2), transparent 18%);
   backdrop-filter: blur(10px) saturate(120%);
+  -webkit-backdrop-filter: blur(10px) saturate(120%);
   border-right: 1px solid color-mix(in oklab, var(--ring), transparent 45%);
-  box-shadow: 0 0 0 1px color-mix(in oklab, var(--ring), transparent 65%),
-    8px 0 24px -12px rgba(0, 0, 0, 0.45);
+  box-shadow:
+    0 0 0 1px color-mix(in oklab, var(--ring), transparent 65%),
+    8px 0 24px -12px rgba(0,0,0,.45);
   z-index: 50;
 }
-.aside.centered .nav {
-  align-self: center;
-}
 
-/* Brand */
-.brand {
-  display: grid;
-  gap: 6px;
-  padding: 6px;
-}
-.brand--stack {
-  justify-items: center;
-  text-align: center;
-}
+.aside.centered .nav { align-self: center; }
 
-.logo-wrap {
-  position: relative;
-  display: inline-block;
-}
-.logo-img {
+/* ===== BRAND ===== */
+.brand { display: grid; gap: 6px; padding: 6px; }
+.brand--stack{ justify-items: center; text-align: center; }
+
+.logo-img{
   width: 100px;
   height: 100px;
   object-fit: contain;
 }
-.logo-white {
-  filter: brightness(0) invert(1);
-}
+.logo-white{ filter: brightness(0) invert(1); } /* logo static alb */
 
-/* EN: Cursor-follow radial color masked by logo
-   RO: Gradient radial urmărește cursorul, mascat pe forma logo-ului */
-.logo-ink {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  pointer-events: none;
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
-  -webkit-mask-position: center;
-  mask-position: center;
-  -webkit-mask-size: contain;
-  mask-size: contain;
-  background: radial-gradient(
-    circle at var(--x, 50%) var(--y, 50%),
-    var(--accent-1) 0%,
-    var(--accent-2) 40%,
-    transparent 70%
-  );
-  opacity: 0;
-  transition: opacity 180ms ease;
-}
-@media (hover: hover) {
-  .logo-wrap:hover .logo-ink {
-    opacity: 1;
-  }
-}
-
-.brand-title {
+.brand-title{
   font-size: 18px;
   font-weight: 900;
-  letter-spacing: 0.5px;
+  letter-spacing: .5px;
 }
-.brand-role {
+.brand-role{
   display: inline-flex;
   gap: 8px;
   align-items: center;
@@ -86,10 +52,8 @@
   font-size: 12px;
   color: color-mix(in oklab, var(--text), var(--muted) 35%);
 }
-.brand-role .role-sep {
-  opacity: 0.5;
-}
-.brand-role .role-accent {
+.brand-role .role-sep{ opacity:.5; }
+.brand-role .role-accent{
   background: var(--gradient-accent);
   -webkit-background-clip: text;
   background-clip: text;
@@ -97,85 +61,91 @@
   font-weight: 700;
 }
 
-/* Nav */
-.nav ul {
+/* ===== SEPARATOR (brand → nav) ===== */
+.brand-sep{
+  height: 2px;
+  margin: 2px 6px 0;
+  background: color-mix(in oklab, var(--ring), transparent 35%);
+  position: relative;
+  border-radius: 1px;
+}
+.brand-sep::after{
+  content: "";
+  position: absolute;
+  left: 0; right: 0; top: -0.5px; height: 1px;
+  /* mic accent discret pe centru, ca în exemplu */
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    color-mix(in oklab, var(--accent-1), transparent 80%) 30%,
+    color-mix(in oklab, var(--accent-2), transparent 80%) 70%,
+    transparent 100%
+  );
+  opacity: .6;
+  pointer-events: none;
+}
+
+/* ===== NAV ===== */
+.nav ul{
   list-style: none;
   margin: 0;
   padding: 0 4px;
   display: grid;
   gap: 10px;
 }
-.link {
+.link{
   position: relative;
   display: flex;
   align-items: center;
   padding: 12px;
   border-radius: 12px;
   color: var(--text);
+  text-decoration: none;
   transition: background 200ms ease;
   overflow: hidden;
 }
-.link .lbl {
-  letter-spacing: 0.2px;
-}
-.link .bar {
-  position: absolute;
-  left: 0;
-  top: 6px;
-  bottom: 6px;
-  width: 3px;
-  border-radius: 3px;
+.link .lbl{ letter-spacing:.2px; }
+
+.link .bar{
+  position:absolute;
+  left:0; top:6px; bottom:6px; width:3px;
+  border-radius:3px;
   background: var(--gradient-accent);
   transform: scaleY(0);
   transform-origin: top;
   transition: transform 200ms ease;
 }
 .link.active .bar,
-.link:hover .bar {
-  transform: scaleY(1);
-}
-.link:hover {
-  background: color-mix(in oklab, var(--bg), transparent 12%);
-}
+.link:hover .bar{ transform: scaleY(1); }
 
-/* Gleam */
-.link::after {
-  content: "";
-  position: absolute;
-  top: -150%;
-  left: -60%;
-  width: 60%;
-  height: 300%;
+.link:hover{ background: color-mix(in oklab, var(--bg), transparent 12%); }
+
+/* gleam hover */
+.link::after{
+  content:"";
+  position:absolute;
+  top:-150%; left:-60%;
+  width:60%; height:300%;
   transform: rotate(20deg);
-  background: linear-gradient(
-    to right,
-    rgba(255, 255, 255, 0) 0%,
-    rgba(255, 255, 255, 0.08) 45%,
-    rgba(255, 255, 255, 0) 90%
-  );
-  opacity: 0;
-  transition: opacity 200ms ease, transform 200ms ease;
+  background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,.08) 45%, rgba(255,255,255,0) 90%);
+  opacity:0; transition: opacity 200ms ease, transform 200ms ease;
 }
-.link:hover::after {
-  opacity: 1;
-  transform: translateX(50%) rotate(20deg);
-}
+.link:hover::after{ opacity:1; transform: translateX(50%) rotate(20deg); }
 
-/* Focus */
+/* focus accesibil */
 .link:focus-visible,
-.chip:focus-visible {
+.chip:focus-visible{
   outline: 2px solid color-mix(in oklab, var(--accent-2), transparent 30%);
   outline-offset: 2px;
   border-radius: 12px;
 }
 
-/* Socials */
-.socials {
-  display: grid;
-  gap: 8px;
+/* ===== SOCIALS ===== */
+.socials{
+  display: grid; gap: 8px;
   padding: 0 4px;
 }
-.chip {
+.chip{
   display: flex;
   justify-content: center;
   align-items: center;
@@ -187,30 +157,25 @@
   font-weight: 600;
   transition: background 200ms ease;
 }
-.chip:hover {
-  background: color-mix(in oklab, var(--bg), transparent 10%);
-}
+.chip:hover{ background: color-mix(in oklab, var(--bg), transparent 10%); }
 
-/* Footer */
-.aside-footer {
+/* ===== FOOTER ===== */
+.aside-footer{
   text-align: center;
   font-size: 12px;
   color: color-mix(in oklab, var(--text), var(--muted) 35%);
-  display: grid;
-  gap: 4px;
+  display: grid; gap: 4px;
 }
-.aside-footer .muted {
+.aside-footer .muted{
   font-size: 11px;
   color: color-mix(in oklab, var(--text), var(--muted) 45%);
 }
 
-/* Mobile behavior (sidebar hidden, handled by Topbar) */
-@media (max-width: 1024px) {
-  .aside {
+/* mobil */
+@media (max-width: 1024px){
+  .aside{
     transform: translateX(-100%);
     transition: transform 200ms ease;
   }
-  .aside.is-mobile-open {
-    transform: translateX(0);
-  }
+  .aside.is-mobile-open{ transform: translateX(0); }
 }

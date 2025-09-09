@@ -1,25 +1,33 @@
 # AVA-Code — Front-End Portfolio
 
-React + CSS (no UI libs) • Dark theme • Gradient accents • Glass effects
+React + CSS (no UI libs) • Dark theme • Gradient accents • Glass/halo effects
 
 ---
 
 ## ✨ Features
 
 - **Layout**
-  - Fixed left sidebar (desktop)
+  - Desktop sidebar + content area
   - Mobile topbar with dropdown navigation
+  - Smooth section reveal via `IntersectionObserver`
 - **Hero**
   - SVG laptop illustration (line-draw + caret blink)
-  - Lightweight parallax on mouse move
+  - Lightweight mouse-parallax (no React re-renders)
+  - Gradient headline with animated shine
+- **About**
+  - Avatar **halo** style with soft glow + gentle float
+  - Two-column card: **Skills** (left) + **Services preview** (right)
+  - Pills/tags, icons (inline SVG), and consistent glass surface
+  - Responsive: stacks to one column and centers content on mobile
+  - Content driven by 3 arrays (`HIGHLIGHTS`, `SKILLS`, `SERVICES`)
 - **Typography**
-  - Per-letter hover effect (white ⇄ gradient, scale micro-interaction, wave delay)
+  - Per-letter hover micro-interaction on hero title
 - **Brand**
   - Logo with gradient hotspot following cursor
 - **UX / A11y**
   - Visible focus states
   - `prefers-reduced-motion` fallbacks
-  - ARIA labels for nav, controls
+  - ARIA labels for navigation and controls
 - **Theming**
   - Centralized CSS tokens (`:root`) for colors, layout, gradients
 
@@ -27,10 +35,10 @@ React + CSS (no UI libs) • Dark theme • Gradient accents • Glass effects
 
 ## 🧱 Tech Stack
 
-- **React 18+** (functional components, hooks)
-- **Vite** (dev server & build)
-- **CSS (vanilla)** with modern features (`color-mix`, `-webkit-text-fill-color`)
-- **No UI libraries** (icons inline SVG if needed)
+- **React 18+** (functional components + hooks)
+- **Vite** (fast dev & build)
+- **Vanilla CSS** with modern features (`color-mix`, `-webkit-text-fill-color`)
+- **No UI libraries** (icons are inline SVG)
 
 ---
 
@@ -48,10 +56,14 @@ src/
     TopbarMobile/
       TopbarMobile.jsx
       TopbarMobile.css
+    About/
+      About.jsx        # data-driven content (arrays at top)
+      About.css        # local tokens + surfaces + responsive
   assets/
+    avatar.png
     logo.svg
   App.jsx
-  index.css
+  index.css           # global design tokens (:root)
   main.jsx
 index.html
 ```
@@ -66,20 +78,20 @@ index.html
 
 **Install & Run**
 ```bash
-# with pnpm
+# pnpm
 pnpm install
 pnpm dev
 
-# or npm
+# npm
 npm install
 npm run dev
 
-# or yarn
+# yarn
 yarn
 yarn dev
 ```
 
-**Build for production**
+**Build & Preview**
 ```bash
 pnpm build
 pnpm preview
@@ -87,7 +99,53 @@ pnpm preview
 
 ---
 
-## 🎨 Theming (Design Tokens)
+## 🎛️ Customizing the About Section
+
+All copy is data-driven. Open `src/components/About/About.jsx` and edit these arrays:
+
+```js
+// 1) Quick stats cards
+const HIGHLIGHTS = [
+  { title: "Experience", value: "+3 years" },
+  { title: "Core Stack", value: "React · TypeScript · PixiJS" },
+  { title: "Focus", value: "Component Systems · Canvas UI" },
+  { title: "Availability", value: "Full-time & Freelance" },
+];
+
+// 2) Skills groups (label + tag pills)
+const SKILLS = [
+  { label: "Core Front-End", tags: ["React", "TypeScript", "Haxe"] },
+  { label: "UI & Styling",   tags: ["HTML", "CSS", "SASS"] },
+  // ...
+];
+
+// 3) Services preview tiles (right column)
+const SERVICES = [
+  { icon: "code",  kicker: "UI Development",        title: "React/TS components",  note: "Clean, reusable, consistent" },
+  { icon: "wand",  kicker: "Game UI / Canvas",      title: "PixiJS & Spine",       note: "Animations · performance" },
+  // ...
+];
+```
+
+**Styling knobs**
+
+`src/components/About/About.css` uses **local tokens** scoped to `.about-shell`:
+```css
+.about-shell {
+  --pad-x: 80px;
+  --gap: 24px;
+  --radius: 18px;
+  --chip-h: 30px;
+  --card-bg-top: color-mix(in oklab, var(--bg), transparent 6%);
+  --card-bg-btm: color-mix(in oklab, var(--bg), transparent 14%);
+  --card-border: color-mix(in oklab, var(--ring), transparent 35%);
+}
+```
+Tweak these to adjust spacing, chip height, and glass surfaces without touching rules below.
+
+---
+
+## 🎨 Theming (Global Tokens)
 
 All global tokens live in `src/index.css`:
 
@@ -107,29 +165,51 @@ All global tokens live in `src/index.css`:
 }
 ```
 
-Update the accents or `--sidebar-w` here to change theme.
+Update `--accent-*` or `--sidebar-w` to change the look globally.
 
 ---
 
 ## ♿ Accessibility
 
-- Focus outlines for links and buttons
-- Animations disabled with `prefers-reduced-motion`
-- ARIA support for navs, burger button, current page
+- Focus outlines for links and buttons  
+- Animations respect `prefers-reduced-motion`  
+- ARIA labels for nav and interactive controls
 
 ---
 
 ## ⚙️ Performance Notes
 
-- Parallax runs via CSS variables + requestAnimationFrame (no React re-renders)
-- SVG animations are short, GPU-friendly
-- Minimal CSS, no heavy dependencies
+- Parallax and shine effects run with CSS variables / GPU-friendly properties  
+- IntersectionObserver reveals elements once, then unobserves (no wasted work)  
+- No heavy CSS frameworks or component libraries
+
+---
+
+## 🚀 Deployment
+
+Any static host works (Vercel, Netlify, GitHub Pages, etc.).
+
+```bash
+pnpm build   # outputs to /dist
+# deploy /dist with your preferred provider
+```
+
+---
+
+## 🧭 Scripts
+
+```bash
+pnpm dev       # start dev server
+pnpm build     # production build
+pnpm preview   # preview built app locally
+pnpm lint      # (optional) add ESLint if you like
+```
 
 ---
 
 ## 📝 License
 
-**MIT** — free to use and adapt.
+MIT — free to use and adapt.
 
 ---
 
@@ -137,4 +217,4 @@ Update the accents or `--sidebar-w` here to change theme.
 
 **Vieru Adrian Alexandru (sKy)**  
 📧 `alexandru.vieru298@gmail.com`  
-Links to GitHub / Instagram / LinkedIn are in the UI.
+Social links are available in the UI.
