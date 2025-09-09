@@ -1,8 +1,7 @@
 import { useRef, useEffect } from "react";
 import "./Hero.css";
 
-/* EN: Split a word into characters; expose index as CSS var --i
-   RO: Împarte un cuvânt în litere; expune indexul ca variabilă CSS --i */
+/* Split a word into characters; expose index as CSS var --i */
 function Word({ text, className = "" }) {
   const chars = Array.from(text);
   return (
@@ -26,8 +25,7 @@ export default function Hero() {
   const rafRef = useRef(0);
   const targetRef = useRef({ x: 0, y: 0 });
 
-  /* EN: Lightweight parallax via rAF + CSS vars (no re-renders)
-     RO: Parallax ușor cu rAF + variabile CSS (fără re-randări) */
+  /* Lightweight parallax via rAF + CSS vars (no re-renders) */
   useEffect(() => {
     const el = heroRef.current;
     if (!el) return;
@@ -68,7 +66,7 @@ export default function Hero() {
 
   return (
     <section className="hero-splash" ref={heroRef}>
-      {/* EN: Left column (copy) / RO: Coloana stângă (text) */}
+      {/* Left column (copy) */}
       <div className="hero-left">
         <div className="overline">
           Vieru Adrian Alexandru <span className="alias">/ sKy</span>
@@ -89,16 +87,16 @@ export default function Hero() {
         </h1>
 
         <p className="hero-sub">
-          // Junior front-end dev — cod curat, viteză bună și atenție la
-          detalii.
+          // Junior front-end dev — clean code, solid performance, and attention
+          to detail.
           <br />
-          // Deschis la proiecte și colaborări.
+          // Open to projects and collaborations.
         </p>
 
-        <button className="cta-gradient">Vezi portofoliul</button>
+        <button className="cta-gradient">View Portfolio</button>
       </div>
 
-      {/* EN: Right column (decorative SVG) / RO: Coloana dreaptă (SVG decorativ) */}
+      {/* Right column (decorative SVG) */}
       <div className="hero-art" aria-hidden="true">
         <svg
           className="laptop-svg"

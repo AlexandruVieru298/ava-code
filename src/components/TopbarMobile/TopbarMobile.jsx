@@ -2,9 +2,8 @@ import { useMemo, useState, useEffect } from "react";
 import "./TopbarMobile.css";
 
 const NAV = [
-  { label: "Portofoliu", href: "/portofoliu" },
-  { label: "Skills", href: "/skills" },
-  { label: "Despre mine", href: "/despre" },
+  { label: "Home", href: "" },
+  { label: "About Me", href: "#about" },
   { label: "Contact", href: "/contact" },
   { label: "Blog", href: "/blog" },
 ];
@@ -12,7 +11,6 @@ const NAV = [
 export default function TopbarMobile({ currentPath }) {
   const [open, setOpen] = useState(false);
 
-  // EN: Close menu on route change / RO: Închide meniul la schimbarea rutei
   const pathname = useMemo(
     () =>
       currentPath ||
@@ -23,7 +21,6 @@ export default function TopbarMobile({ currentPath }) {
     setOpen(false);
   }, [pathname]);
 
-  // EN: ESC to close / RO: ESC pentru închidere
   useEffect(() => {
     const onKey = (e) => e.key === "Escape" && setOpen(false);
     window.addEventListener("keydown", onKey);
